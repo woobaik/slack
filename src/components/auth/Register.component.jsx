@@ -36,6 +36,7 @@ const Register = () => {
 		} else {
 			console.log("Password is not matching please try again")
 		}
+
 		firebase.auth().onAuthStateChanged((user) => {
 			console.log("what the fckkk", user)
 			if (user) {
