@@ -20,32 +20,54 @@ const Register = () => {
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
 	const [passwordConfirmation, setPasswordConfirmation] = useState("")
+	const [errors, setErrors] = useState([])
+	const [loading, setLoading] = useState(false)
 
 	const handleSubmit = (event) => {
 		event.preventDefault()
-		console.log(email, password, passwordConfirmation)
-
-		if (password === passwordConfirmation) {
+		if (isFormValid()) {
+			setErrors([])
+			setLoading(true)
 			firebase
 				.auth()
 				.createUserWithEmailAndPassword(email, password)
+				.then((user) => {
+					console.log("Firebase User", user)
+					setLoading(false)
+				})
 				.catch((error) => {
 					console.log("Error Code", error.code)
 					console.log("Error Msg", error.message)
+					setErrors([...errors, error.message])
+					console.log(errors)
+					setLoading(false)
 				})
-		} else {
-			console.log("Password is not matching please try again")
+		}
+	}
+
+	const isFormValid = () => {
+		if (!isAllFilled()) {
+			setErrors([...errors, "Please fill all fields"])
+			return false
+		} else if (!ispasswordValid()) {
+			setErrors([...errors, "Password is invalid"])
+			return false
+		}
+		return true
+	}
+
+	const isAllFilled = () => {
+		return email || password || passwordConfirmation
+	}
+
+	const ispasswordValid = () => {
+		if (password.length < 6 || passwordConfirmation.length < 6) {
+			return false
+		} else if (password !== passwordConfirmation) {
+			return false
 		}
 
-		firebase.auth().onAuthStateChanged((user) => {
-			console.log("what the fckkk", user)
-			if (user) {
-				setUser(user)
-				history.push("/")
-			} else {
-				return
-			}
-		})
+		return true
 	}
 
 	return (
@@ -97,7 +119,12 @@ const Register = () => {
 							placeholder="Enter password again"
 						/>
 
-						<Button color="violet" fluid size="large">
+						<Button
+							className={loading ? "loading" : ""}
+							disabled={loading}
+							color="violet"
+							fluid
+							size="large">
 							Register
 						</Button>
 					</Segment>
