@@ -46,8 +46,10 @@ const Register = () => {
 
 	const isFormValid = () => {
 		if (!isAllFilled()) {
+			setErrors(["Please fill all fields"])
 			return false
 		} else if (!ispasswordValid()) {
+			setErrors(["password is invalid"])
 			return false
 		}
 		return true
@@ -142,7 +144,9 @@ const Register = () => {
 				{errors.length > 0 && (
 					<Message>
 						<Message.Header>Please Check your entry</Message.Header>
-						<p>{errors.map((error) => error)}</p>
+						{errors.map((error, i) => (
+							<p key={i}>{error}</p>
+						))}
 					</Message>
 				)}
 				<Message>
