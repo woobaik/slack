@@ -25,8 +25,9 @@ const Register = () => {
 
 	const handleSubmit = (event) => {
 		event.preventDefault()
+		setErrors(() => [])
+		console.log("everytimesubmit", errors)
 		if (isFormValid()) {
-			setErrors([])
 			setLoading(true)
 			firebase
 				.auth()
@@ -36,9 +37,7 @@ const Register = () => {
 					setLoading(false)
 				})
 				.catch((error) => {
-					console.log("Error Code", error.code)
-					console.log("Error Msg", error.message)
-					setErrors([...errors, error.message])
+					setErrors([error.message])
 					console.log(errors)
 					setLoading(false)
 				})
@@ -47,10 +46,8 @@ const Register = () => {
 
 	const isFormValid = () => {
 		if (!isAllFilled()) {
-			setErrors([...errors, "Please fill all fields"])
 			return false
 		} else if (!ispasswordValid()) {
-			setErrors([...errors, "Password is invalid"])
 			return false
 		}
 		return true
@@ -68,6 +65,16 @@ const Register = () => {
 		}
 
 		return true
+	}
+
+	const displayErrorInput = (inputName) => {
+		console.log("c8 its me", errors)
+		if (
+			errors.length > 0 &&
+			errors.some((error) => error.toLowerCase().includes(inputName))
+		) {
+			return "error"
+		}
 	}
 
 	return (
@@ -96,6 +103,7 @@ const Register = () => {
 							placeholder="Enter email..."
 							type="email"
 							fluid
+							className={displayErrorInput("email")}
 						/>
 
 						<Form.Input
@@ -107,6 +115,7 @@ const Register = () => {
 							value={password}
 							type="password"
 							placeholder="Enter password"
+							className={displayErrorInput("password")}
 						/>
 
 						<Form.Input
@@ -117,6 +126,7 @@ const Register = () => {
 							value={passwordConfirmation}
 							type="password"
 							placeholder="Enter password again"
+							className={displayErrorInput("password")}
 						/>
 
 						<Button
@@ -129,6 +139,12 @@ const Register = () => {
 						</Button>
 					</Segment>
 				</Form>
+				{errors.length > 0 && (
+					<Message>
+						<Message.Header>Please Check your entry</Message.Header>
+						<p>{errors.map((error) => error)}</p>
+					</Message>
+				)}
 				<Message>
 					Alreay have account? <Link to="/login">Log in</Link>
 				</Message>
