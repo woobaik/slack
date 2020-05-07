@@ -47,7 +47,7 @@ export default (state = initialState, action) => {
 		case LOGOUT_REQUEST:
 			return {
 				...state,
-				isLoggingOut: false,
+				isLoggingOut: true,
 				logoutError: false,
 			}
 

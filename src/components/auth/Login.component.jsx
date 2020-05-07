@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import firebase from "../../firebase"
+
 import { connect } from "react-redux"
 import { Link, Redirect } from "react-router-dom"
 import { loginUser } from "../../redux/users/actions/Actions"

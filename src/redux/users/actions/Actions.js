@@ -81,12 +81,13 @@ export const logoutUser = () => (dispatch) => {
 	dispatch(requestLogout())
 	firebase
 		.auth()
-		.signOut.then(() => {
-			dispatch(receiveLogout)
+		.signOut()
+		.then(() => {
+			dispatch(receiveLogout())
 		})
 		.catch((error) => {
 			console.log("something wrong with logging out")
-			dispatch(loginError)
+			dispatch(loginError())
 		})
 }
 

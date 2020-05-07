@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Visibility, Menu, Container, Dropdown, Image } from "semantic-ui-react"
 import { NavLink } from "react-router-dom"
 import { connect } from "react-redux"
+import { logoutUser } from "../../redux/users/actions/Actions"
 
 const Header = (props) => {
 	const fixedMenuStyle = {
@@ -18,6 +19,16 @@ const Header = (props) => {
 		transition: "box-shadow 0.5s ease, padding 0.5s ease",
 	}
 	console.log("멋살", props)
+
+	const { isAuthenticated, dispatch } = props
+
+	// TODO:: SIGN out
+	const signOutUser = () => {
+		console.log("start logging out")
+		dispatch(logoutUser())
+		console.log("logout success")
+	}
+
 	return (
 		<Menu borderless fixed={true} style={fixedMenuStyle}>
 			<Container text>
@@ -47,7 +58,13 @@ const Header = (props) => {
 									<Dropdown.Item>List Item</Dropdown.Item>
 								</Dropdown.Menu>
 							</Dropdown.Item>
-							<Dropdown.Item>Sign out</Dropdown.Item>
+							{isAuthenticated ? (
+								<Dropdown.Item onClick={() => signOutUser()}>
+									Sign out
+								</Dropdown.Item>
+							) : (
+								<Dropdown.Item>Sign In</Dropdown.Item>
+							)}
 						</Dropdown.Menu>
 					</Dropdown>
 				</Menu.Menu>
