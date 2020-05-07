@@ -5,6 +5,7 @@ import {
 	LOGIN_SUCCESS,
 	LOGIN_FAILURE,
 	LOGOUT_REQUEST,
+	LOGOUT_FAILURE,
 	LOGOUT_SUCCESS,
 	VERIFY_REQUEST,
 	VERIFY_SUCCESS,
@@ -67,6 +68,7 @@ export const loginUser = (email, password) => (dispatch) => {
 		.signInWithEmailAndPassword(email, password)
 		.then((user) => {
 			dispatch(receiveLogin(user))
+			console.log("user logged in")
 		})
 		.catch((error) => {
 			console.log("There was error with sign in")

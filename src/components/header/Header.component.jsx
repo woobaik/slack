@@ -1,8 +1,9 @@
 import React, { useState } from "react"
 import { Visibility, Menu, Container, Dropdown, Image } from "semantic-ui-react"
 import { NavLink } from "react-router-dom"
+import { connect } from "react-redux"
 
-const Header = () => {
+const Header = (props) => {
 	const fixedMenuStyle = {
 		backgroundColor: "#fff",
 		border: "1px solid #ddd",
@@ -16,7 +17,7 @@ const Header = () => {
 		marginTop: "4em",
 		transition: "box-shadow 0.5s ease, padding 0.5s ease",
 	}
-
+	console.log("멋살", props)
 	return (
 		<Menu borderless fixed={true} style={fixedMenuStyle}>
 			<Container text>
@@ -46,7 +47,7 @@ const Header = () => {
 									<Dropdown.Item>List Item</Dropdown.Item>
 								</Dropdown.Menu>
 							</Dropdown.Item>
-							<Dropdown.Item>List Item</Dropdown.Item>
+							<Dropdown.Item>Sign out</Dropdown.Item>
 						</Dropdown.Menu>
 					</Dropdown>
 				</Menu.Menu>
@@ -55,4 +56,10 @@ const Header = () => {
 	)
 }
 
-export default Header
+const mapStateToProps = (state) => {
+	return {
+		isAuthenticated: state.user.isAuthenticated,
+	}
+}
+
+export default connect(mapStateToProps)(Header)
