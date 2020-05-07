@@ -23,7 +23,7 @@ const Header = () => {
 				<Menu.Item>
 					<Image size="mini" src="/logo.png" />
 				</Menu.Item>
-				<Menu.Item header>Project Name</Menu.Item>
+				<Menu.Item header>SLACK</Menu.Item>
 				<NavLink to="/register">
 					<Menu.Item as="a">Register</Menu.Item>
 				</NavLink>

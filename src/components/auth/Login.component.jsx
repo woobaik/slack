@@ -23,20 +23,15 @@ const Login = () => {
 		firebase
 			.auth()
 			.signInWithEmailAndPassword(email, password)
+			.then(() => {
+				console.log("hello")
+			})
 			.catch((error) => {
 				let errorCode = error.code
 				let errorMessage = error.message
 				errors.setErrors(errors.concat(error))
 				console.log(errorCode, errorMessage)
 			})
-
-		firebase.auth().onAuthStateChanged((user) => {
-			if (user) {
-				history.push("/")
-			} else {
-				return
-			}
-		})
 	}
 
 	return (
