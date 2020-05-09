@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import "./Register.style.css"
 import firebase from "../../firebase"
 import { Link, useHistory } from "react-router-dom"
+import { signupUser } from "../../redux/users/actions/Actions"
 
 import {
 	Grid,
@@ -13,7 +14,7 @@ import {
 	Message,
 } from "semantic-ui-react"
 
-const Register = () => {
+const Register = (props) => {
 	let history = useHistory()
 
 	const [user, setUser] = useState("")
@@ -23,24 +24,16 @@ const Register = () => {
 	const [errors, setErrors] = useState([])
 	const [loading, setLoading] = useState(false)
 
+	const { dispatch } = props
+
 	const handleSubmit = (event) => {
 		event.preventDefault()
 		setErrors(() => [])
-		console.log("everytimesubmit", errors)
+
 		if (isFormValid()) {
 			setLoading(true)
-			firebase
-				.auth()
-				.createUserWithEmailAndPassword(email, password)
-				.then((user) => {
-					console.log("Firebase User", user)
-					setLoading(false)
-				})
-				.catch((error) => {
-					setErrors([error.message])
-					console.log(errors)
-					setLoading(false)
-				})
+
+			dispatch(signupUser())
 		}
 	}
 
@@ -136,7 +129,8 @@ const Register = () => {
 							disabled={loading}
 							color="violet"
 							fluid
-							size="large">
+							size="large"
+							onClick={() => console.log("btn clicked for submit")}>
 							Register
 						</Button>
 					</Segment>
